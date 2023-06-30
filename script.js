@@ -1,23 +1,28 @@
 var connection = "blue";
-
+// Global variables for the Bluetooth device and connection status
+let device;
+let connectionStatusElement;
 
 
 
 if(connection === "blue"){
     
-    // Check if the Web Bluetooth API is supported by the browser
-if (navigator.bluetooth) {
-  // Function to handle the connection and send commands
-  async function connectToDevice() {
-    try {
-      // Request Bluetooth device
-      const device = await navigator.bluetooth.requestDevice({
-        filters: [
-          { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
-        ]
-      });
 
 
+// Function to handle the connection and send commands
+async function connectToDevice() {
+  try {
+    // Request Bluetooth device
+    device = await navigator.bluetooth.requestDevice({
+      filters: [
+        { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
+      ]
+    });
+   // Connect to the Bluetooth device
+    await device.gatt.connect();
+
+    // Update the connection status
+    connectionStatusElement.textContent = "Connected";
   
 
 // Get the buttons for each motor
@@ -78,19 +83,18 @@ motorDBackwardBtn.addEventListener('click', () => moveMotor('D', 'backward'));
 
 
     
-    
-    } catch (error) {
-      console.error('Bluetooth error:', error);
-    }
+  } catch (error) {
+    console.error('Bluetooth connection error:', error);
   }
-
-  // Call the function to connect to the Bluetooth device
-  connectToDevice();
-} else {
-  console.error('Web Bluetooth API is not supported by this browser.');
 }
-    
-    
+
+// Function to initialize the page
+function initializePage() {
+  connectionStatusElement = document.getElementById("connectionStatus");
+}
+
+// Call the initializePage function to set up the page
+initializePage();
     
     
 }else{
