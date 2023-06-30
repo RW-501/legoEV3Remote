@@ -16,6 +16,14 @@ if (navigator.bluetooth) {
 }
 // Function to handle the connection and send commands
 
+// Store references to the button and device list container
+const deviceListButton = document.getElementById("deviceListButton");
+const deviceListContainer = document.getElementById("deviceListContainer");
+
+// Function to toggle the device list container visibility
+function toggleDeviceList() {
+  deviceListContainer.classList.toggle("show");
+}
 
 
 
