@@ -83,6 +83,7 @@ motorDBackwardBtn.addEventListener('click', () => moveMotor('D', 'backward'));
 
     
   } catch (error) {
+     document.getElementById("message").innerHTML = 'Bluetooth connection error:  '+ error; 
     console.error('Bluetooth connection error:', error);
   }
 }
