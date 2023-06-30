@@ -5,7 +5,6 @@ let connectionStatusElement;
 
 
 
-if(connection === "blue"){
     
 
 
@@ -95,7 +94,8 @@ function initializePage() {
 
 // Call the initializePage function to set up the page
 initializePage();
-    
+    if(connection === "blue"){
+
     
 }else{
     
