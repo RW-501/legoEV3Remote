@@ -6,6 +6,13 @@ let connectionStatusElement;
 
 let device; // Variable to store the Bluetooth device
 
+if (navigator.bluetooth) {
+  // Web Bluetooth API is supported
+  // Your code for connecting to the Bluetooth device and controlling motors
+} else {
+  // Web Bluetooth API is not supported
+  document.getElementById("message").innerHTML = 'Web Bluetooth API is not supported in this browser.';
+}
 // Function to handle the connection and send commands
 async function connectToDevice() {
   try {
