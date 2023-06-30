@@ -14,10 +14,15 @@ if (navigator.bluetooth) {
   document.getElementById("message").innerHTML = 'Web Bluetooth API is not supported in this browser.';
 }
 // Function to handle the connection and send commands
+
+
+
+
+// Function to handle the connection and send commands
 async function connectToDevice() {
   try {
     // Request Bluetooth device
-    device = await navigator.bluetooth.requestDevice({
+    const device = await navigator.bluetooth.requestDevice({
       filters: [
         { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
       ]
@@ -71,9 +76,7 @@ async function connectToDevice() {
         case 'D':
           return '00001529-1212-efde-1523-785feabcd123'; // Motor D characteristic UUID
         default:
-          console.error('Invalid motor:', motor);
-                   document.getElementById("message").innerHTML = 'Invalid motor:  '+ motor; 
-
+            document.getElementById("message").innerHTML ='Invalid motor:  '+ motor;
           return null;
       }
     }
@@ -89,14 +92,9 @@ async function connectToDevice() {
     motorDBackwardBtn.addEventListener('click', () => moveMotor('D', 'backward'));
 
   } catch (error) {
-           document.getElementById("message").innerHTML = 'Bluetooth connection error:  '+ error; 
-
-    console.error('Bluetooth connection error:', error);
+      document.getElementById("message").innerHTML ='Bluetooth connection error:  '+ error;
   }
 }
-
-
-
 
 // Function to initialize the page
 function initializePage() {
@@ -106,45 +104,6 @@ function initializePage() {
 
 // Call the initializePage function to set up the page
 initializePage();
-
-
-// Store references to the button and device list container
-const deviceListButton = document.getElementById("deviceListButton");
-const deviceListContainer = document.getElementById("deviceListContainer");
-
-// Function to toggle the device list container visibility
-function toggleDeviceList() {
-  deviceListContainer.classList.toggle("show");
-}
-
-// Function to display available devices
-async function displayAvailableDevices() {
-  try {
-    // Request Bluetooth devices
-    const devices = await navigator.bluetooth.requestDevice({
-      filters: [
-        { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
-      ]
-    });
-
-    // Display the available devices
-    const deviceList = document.getElementById("deviceList");
-    deviceList.innerHTML = ""; // Clear previous list
-
-    devices.forEach(device => {
-      const deviceName = device.name;
-      const deviceListItem = document.createElement('li');
-      deviceListItem.textContent = deviceName;
-      deviceList.appendChild(deviceListItem);
-    });
-  } catch (error) {
-     document.getElementById("message").innerHTML ='Error displaying available devices:  '+ error;
-  }
-}
-
-// Call the displayAvailableDevices function to show available devices
-//displayAvailableDevices();
-
 
 
 
