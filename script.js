@@ -9,6 +9,7 @@ let device; // Variable to store the Bluetooth device
 if (navigator.bluetooth) {
   // Web Bluetooth API is supported
   // Your code for connecting to the Bluetooth device and controlling motors
+    document.getElementById("message").innerHTML = 'supported';
 } else {
   // Web Bluetooth API is not supported
   document.getElementById("message").innerHTML = 'Web Bluetooth API is not supported in this browser.';
@@ -34,6 +35,7 @@ async function connectToDevice() {
     // Update the connection status
     const connectionStatusElement = document.getElementById("connectionStatus");
     connectionStatusElement.textContent = "Connected";
+    document.getElementById("message").innerHTML = '';
 
     // Get the buttons for each motor
     const motorAForwardBtn = document.querySelector("#controls button[data-motor='A'][data-direction='forward']");
