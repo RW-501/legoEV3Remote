@@ -95,6 +95,9 @@ async function connectToDevice() {
   }
 }
 
+
+
+
 // Function to initialize the page
 function initializePage() {
   const connectButton = document.getElementById("connectButton");
@@ -103,6 +106,49 @@ function initializePage() {
 
 // Call the initializePage function to set up the page
 initializePage();
+
+
+// Store references to the button and device list container
+const deviceListButton = document.getElementById("deviceListButton");
+const deviceListContainer = document.getElementById("deviceListContainer");
+
+// Function to toggle the device list container visibility
+function toggleDeviceList() {
+  deviceListContainer.classList.toggle("show");
+}
+
+// Function to display available devices
+async function displayAvailableDevices() {
+  try {
+    // Request Bluetooth devices
+    const devices = await navigator.bluetooth.requestDevice({
+      filters: [
+        { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
+      ]
+    });
+
+    // Display the available devices
+    const deviceList = document.getElementById("deviceList");
+    deviceList.innerHTML = ""; // Clear previous list
+
+    devices.forEach(device => {
+      const deviceName = device.name;
+      const deviceListItem = document.createElement('li');
+      deviceListItem.textContent = deviceName;
+      deviceList.appendChild(deviceListItem);
+    });
+  } catch (error) {
+     document.getElementById("message").innerHTML ='Error displaying available devices:  '+ error;
+  }
+}
+
+// Call the displayAvailableDevices function to show available devices
+//displayAvailableDevices();
+
+
+
+
+
 
     if(connection === "blue"){
 
