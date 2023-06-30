@@ -101,7 +101,9 @@ async function connectToDevice() {
 // Function to initialize the page
 function initializePage() {
   const connectButton = document.getElementById("connectButton");
-  connectButton.addEventListener('click', connectToDevice);
+  if (connectButton) {
+    connectButton.addEventListener('click', connectToDevice);
+  }
 }
 
 // Call the initializePage function to set up the page
