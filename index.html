@@ -40,6 +40,18 @@
         <button onclick="stopMotor('D')">Stop</button>
     </div>
 
+<!-- Add a button to open/close the device list -->
+<button id="deviceListButton" onclick="toggleDeviceList()">Device List</button>
+
+<!-- Add a pop-up container for the device list -->
+<div id="deviceListContainer" class="device-list-container">
+  <ul id="deviceList" class="device-list"></ul>
+</div>
+
+
+    
     <script src="script.js"></script>
+
+    
 </body>
 </html>
