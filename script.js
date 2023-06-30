@@ -1,12 +1,10 @@
 var connection = "blue";
 // Global variables for the Bluetooth device and connection status
-let device;
+
 let connectionStatusElement;
 
 
-
-    
-
+let device; // Variable to store the Bluetooth device
 
 // Function to handle the connection and send commands
 async function connectToDevice() {
@@ -17,84 +15,88 @@ async function connectToDevice() {
         { services: ['00001101-0000-1000-8000-00805f9b34fb'] } // LEGO Mindstorms EV3 service UUID
       ]
     });
-   // Connect to the Bluetooth device
-    await device.gatt.connect();
+
+    // Connect to the Bluetooth device
+    const server = await device.gatt.connect();
 
     // Update the connection status
+    const connectionStatusElement = document.getElementById("connectionStatus");
     connectionStatusElement.textContent = "Connected";
-  
 
-// Get the buttons for each motor
-const motorAForwardBtn = document.querySelector("#controls button[data-motor='A'][data-direction='forward']");
-const motorABackwardBtn = document.querySelector("#controls button[data-motor='A'][data-direction='backward']");
-const motorBForwardBtn = document.querySelector("#controls button[data-motor='B'][data-direction='forward']");
-const motorBBackwardBtn = document.querySelector("#controls button[data-motor='B'][data-direction='backward']");
-const motorCForwardBtn = document.querySelector("#controls button[data-motor='C'][data-direction='forward']");
-const motorCBackwardBtn = document.querySelector("#controls button[data-motor='C'][data-direction='backward']");
-const motorDForwardBtn = document.querySelector("#controls button[data-motor='D'][data-direction='forward']");
-const motorDBackwardBtn = document.querySelector("#controls button[data-motor='D'][data-direction='backward']");
+    // Get the buttons for each motor
+    const motorAForwardBtn = document.querySelector("#controls button[data-motor='A'][data-direction='forward']");
+    const motorABackwardBtn = document.querySelector("#controls button[data-motor='A'][data-direction='backward']");
+    const motorBForwardBtn = document.querySelector("#controls button[data-motor='B'][data-direction='forward']");
+    const motorBBackwardBtn = document.querySelector("#controls button[data-motor='B'][data-direction='backward']");
+    const motorCForwardBtn = document.querySelector("#controls button[data-motor='C'][data-direction='forward']");
+    const motorCBackwardBtn = document.querySelector("#controls button[data-motor='C'][data-direction='backward']");
+    const motorDForwardBtn = document.querySelector("#controls button[data-motor='D'][data-direction='forward']");
+    const motorDBackwardBtn = document.querySelector("#controls button[data-motor='D'][data-direction='backward']");
 
-// Function to send motor command
-function sendMotorCommand(motor, direction) {
-  const command = direction === 'forward' ? 'F' : 'B';
-  const characteristic = getMotorCharacteristic(motor);
-  const data = new Uint8Array([command.charCodeAt(0)]);
-  characteristic.writeValue(data);
-}
+    // Function to send motor command
+    function sendMotorCommand(motor, direction) {
+      const command = direction === 'forward' ? 'F' : 'B';
+      const characteristic = getMotorCharacteristic(motor);
+      const data = new Uint8Array([command.charCodeAt(0)]);
+      characteristic.writeValue(data);
+    }
 
-// Function to move a motor
-function moveMotor(motor, direction) {
-  sendMotorCommand(motor, direction);
-}
+    // Function to move a motor
+    function moveMotor(motor, direction) {
+      sendMotorCommand(motor, direction);
+    }
 
-// Function to stop a motor
-function stopMotor(motor) {
-  sendMotorCommand(motor, 'stop');
-}
+    // Function to stop a motor
+    function stopMotor(motor) {
+      sendMotorCommand(motor, 'stop');
+    }
 
-// Function to get the characteristic for a motor
-function getMotorCharacteristic(motor) {
-  // Replace the characteristic UUIDs with the actual UUIDs for your EV3 brick
-  switch (motor) {
-    case 'A':
-      return '00001526-1212-efde-1523-785feabcd123'; // Motor A characteristic UUID
-    case 'B':
-      return '00001527-1212-efde-1523-785feabcd123'; // Motor B characteristic UUID
-    case 'C':
-      return '00001528-1212-efde-1523-785feabcd123'; // Motor C characteristic UUID
-    case 'D':
-      return '00001529-1212-efde-1523-785feabcd123'; // Motor D characteristic UUID
-    default:
-      console.error('Invalid motor:', motor);
-      return null;
-  }
-}
+    // Function to get the characteristic for a motor
+    function getMotorCharacteristic(motor) {
+      // Replace the characteristic UUIDs with the actual UUIDs for your EV3 brick
+      switch (motor) {
+        case 'A':
+          return '00001526-1212-efde-1523-785feabcd123'; // Motor A characteristic UUID
+        case 'B':
+          return '00001527-1212-efde-1523-785feabcd123'; // Motor B characteristic UUID
+        case 'C':
+          return '00001528-1212-efde-1523-785feabcd123'; // Motor C characteristic UUID
+        case 'D':
+          return '00001529-1212-efde-1523-785feabcd123'; // Motor D characteristic UUID
+        default:
+          console.error('Invalid motor:', motor);
+                   document.getElementById("message").innerHTML = 'Invalid motor:  '+ motor; 
 
-// Add event listeners to the motor buttons
-motorAForwardBtn.addEventListener('click', () => moveMotor('A', 'forward'));
-motorABackwardBtn.addEventListener('click', () => moveMotor('A', 'backward'));
-motorBForwardBtn.addEventListener('click', () => moveMotor('B', 'forward'));
-motorBBackwardBtn.addEventListener('click', () => moveMotor('B', 'backward'));
-motorCForwardBtn.addEventListener('click', () => moveMotor('C', 'forward'));
-motorCBackwardBtn.addEventListener('click', () => moveMotor('C', 'backward'));
-motorDForwardBtn.addEventListener('click', () => moveMotor('D', 'forward'));
-motorDBackwardBtn.addEventListener('click', () => moveMotor('D', 'backward'));
+          return null;
+      }
+    }
 
+    // Add event listeners to the motor buttons
+    motorAForwardBtn.addEventListener('click', () => moveMotor('A', 'forward'));
+    motorABackwardBtn.addEventListener('click', () => moveMotor('A', 'backward'));
+    motorBForwardBtn.addEventListener('click', () => moveMotor('B', 'forward'));
+    motorBBackwardBtn.addEventListener('click', () => moveMotor('B', 'backward'));
+    motorCForwardBtn.addEventListener('click', () => moveMotor('C', 'forward'));
+    motorCBackwardBtn.addEventListener('click', () => moveMotor('C', 'backward'));
+    motorDForwardBtn.addEventListener('click', () => moveMotor('D', 'forward'));
+    motorDBackwardBtn.addEventListener('click', () => moveMotor('D', 'backward'));
 
-    
   } catch (error) {
-     document.getElementById("message").innerHTML = 'Bluetooth connection error:  '+ error; 
+           document.getElementById("message").innerHTML = 'Bluetooth connection error:  '+ error; 
+
     console.error('Bluetooth connection error:', error);
   }
 }
 
 // Function to initialize the page
 function initializePage() {
-  connectionStatusElement = document.getElementById("connectionStatus");
+  const connectButton = document.getElementById("connectButton");
+  connectButton.addEventListener('click', connectToDevice);
 }
 
 // Call the initializePage function to set up the page
 initializePage();
+
     if(connection === "blue"){
 
     
